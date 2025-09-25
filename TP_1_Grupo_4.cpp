@@ -18,8 +18,18 @@ struct Repa {
 
 int main(){
 
+ //Ejercicio 2
+ ifstream archiprod; 
+ archiprod.open("productos.bin", ios::binary);
+
+    
+ archiprod.close();
+
+ ifstream archirep; 
+ archirep.open("reparaciones.bin", ios::binary);
 
 
 
+ archirep.close();
 
 }
