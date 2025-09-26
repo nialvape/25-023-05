@@ -45,12 +45,12 @@ ifstream & operator>>(ifstream  &fs, Repa &r) {
 
 bool criterio(const Repa &a, const Repa &b) {
     if (a.cliente != b.cliente) {
-        return a.cliente < b.cliente; // ordena por cliente
+        return a.cliente < b.cliente; 
     }
     if (a.tipoP != b.tipoP) {
-        return a.tipoP < b.tipoP;   //  mismo cliente, por tipo
+        return a.tipoP < b.tipoP;  
     }
-    return a.sku < b.sku;  //  mismo cliente y tipo, por sku
+    return a.sku < b.sku;  
 }
 
 template <typename T>
@@ -132,14 +132,14 @@ int main(){
  ifstream archiprod; 
  archiprod.open("productos.bin", ios::binary);   
      for (int i = 0; i < dimprod; i++) {
-        archiprod >> prod [i];         // usa el operador >> que creaste
+        archiprod >> prod [i];   
     }
  archiprod.close();
 
  ifstream archirep; 
  archirep.open("reparaciones.bin", ios::binary);
     for (int i = 0; i < dimrep; i++) {
-        archirep >> rep [i];         // usa el operador >> que creaste
+        archirep >> rep [i];
     }
  archirep.close();
 
