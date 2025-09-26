@@ -3,13 +3,13 @@
 
 // Funciones auxiliares para serializar struct que contengan strings
 
-void writestring(std::fstream &fs, std::string str, int largo)
+void writestring(std::ofstream &fs, std::string str, int largo)
 {
 	str.resize(largo);
 	fs.write(str.data(), largo);
 }
 
-std::string readstring(std::fstream &fs, int largo)
+std::string readstring(std::ifstream &fs, int largo)
 {
 	char *buffer = new char[largo + 1];
 	buffer[largo] = '\0';
