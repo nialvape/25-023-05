@@ -27,19 +27,19 @@ struct Repa {
     float Cost = 0;
     float presup = 0;};
 
-fstream& operator>>(fstream &fs, Product &p) {
+ifstream & operator>>(ifstream  &fs, Product &p) {
     p.sku  = readstring(fs, dimsku);
     p.desc = readstring(fs, dimdesc);
-    fs.read(reinterpret_cast<char *>(&p.costoF), sizeof(dimcostF));
+    fs.read(reinterpret_cast<char *>(&p.costoF), sizeof(float));
     return fs;
 }
 
-fstream& operator>>(fstream &fs, Repa &r) {
+ifstream & operator>>(ifstream  &fs, Repa &r) {
     r.cliente = readstring(fs, dimclie);
-    fs.read(reinterpret_cast<char *>(&r.tipoP), sizeof(dimtipoP));
+    fs.read(reinterpret_cast<char *>(&r.tipoP), sizeof(int));
     r.sku = readstring(fs, dimsku);
-    fs.read(reinterpret_cast<char *>(&r.Cost), sizeof(dimCost));
-    fs.read(reinterpret_cast<char *>(&r.presup), sizeof(dimpresup));
+    fs.read(reinterpret_cast<char *>(&r.Cost), sizeof(float));
+    fs.read(reinterpret_cast<char *>(&r.presup), sizeof(float));
     return fs;
 }
 
@@ -56,16 +56,15 @@ bool criterio(const Repa &a, const Repa &b) {
 template <typename T>
 void ordenar(T rep[], int dimrep, bool (*criterio)(const T&, const T&)) {
     bool desordenado = true;
-    for (int i = 1; i < dimprod && desordenado; i++) {
+    for (int i = 1; i < dimrep && desordenado; i++) {
         desordenado = false;
-        for (int j = 0; j < dimprod - i; j++) {
+        for (int j = 0; j < dimrep - i; j++) {
             if (criterio(rep[j + 1], rep[j])) {
                 T aux = rep[j];
                 rep[j] = rep[j + 1];
                 rep[j + 1] = aux;
                 desordenado = true;}
         } } }
-
 
 int buscar_linea_ord(string clave, Repa rep[], int dimrep){
     int i;
@@ -101,7 +100,7 @@ void Cliente (Repa rep[], int dimrep, Product prod []){
     int iclien = buscar_linea_ord (clave, rep, dimrep);
     if (iclien==-1){
         cout<<"Cliente no encontrado"<<endl;
-        return;
+        return Cliente (rep, dimrep, prod);;
     } //ejercicio 5
     
     float CostoFijo =0, CostoDirecto=0, Presupuesto=0; 
@@ -119,36 +118,33 @@ void Cliente (Repa rep[], int dimrep, Product prod []){
 
         iclien++;
     }
-    cout<<"La ganancia total de una reparación es de "<<CostoFijo + CostoDirecto - Presupuesto <<"$"<<endl;
-     return Cliente (rep,dimrep,prod);}
+    cout<<"La ganancia total de una reparación es de "<<Presupuesto - CostoFijo + CostoDirecto <<"$"<<endl;
+     return Cliente (rep, dimrep, prod);}
 
 
 int main(){
- int dimrep=0;
+ int dimrep=16;
  Product prod [dimprod];
  Repa rep [dimrep];
 
 
  //Ejercicio 2
- fstream archiprod; 
+ ifstream archiprod; 
  archiprod.open("productos.bin", ios::binary);   
      for (int i = 0; i < dimprod; i++) {
         archiprod >> prod [i];         // usa el operador >> que creaste
     }
  archiprod.close();
 
- fstream archirep; 
+ ifstream archirep; 
  archirep.open("reparaciones.bin", ios::binary);
-    Repa aux; 
-    do {
-    archirep>>rep[dimrep];
-    dimrep++;
-    } while (archirep>>aux);
+    for (int i = 0; i < dimrep; i++) {
+        archirep >> rep [i];         // usa el operador >> que creaste
+    }
  archirep.close();
 
  ordenar(rep, dimrep,*criterio);
- 
- Cliente (rep, dimrep, prod);
+Cliente (rep, dimrep, prod);
 
  return 0;
 }
