@@ -18,14 +18,16 @@ const string FIN= "EOF";
 struct Product {
     string sku;
     string desc;
-    float costoF = 0;};
+    float costoF = 0;
+};
 
 struct Repa {
     string cliente;
     int tipoP; // puede ser 0,1,2
     string sku;
     float Cost = 0;
-    float presup = 0;};
+    float presup = 0;
+};
 
 ifstream & operator>>(ifstream  &fs, Product &p) {
     p.sku  = readstring(fs, dimsku);
@@ -64,15 +66,17 @@ void ordenar(T rep[], int dimrep, bool (*criterio)(const T&, const T&)) {
                 rep[j] = rep[j + 1];
                 rep[j + 1] = aux;
                 desordenado = true;}
-        } } }
+        }
+    }
+}
 
-int buscar_linea_ord(string clave, Repa rep[], int dimrep){
+int buscar_linea_ord(string clave, Repa rep[], int dimrep) {
     int i;
     for (i=0; i<dimrep && rep[i].cliente != clave; i++);
     return(i<dimrep && rep[i].cliente == clave)?i:-1;
 }
 
-int buscar_linea_ord2(string aux, Product prod []){
+int buscar_linea_ord2(string aux, Product prod []) {
     int i;
     for (i=0; i<dimprod && prod[i].sku != aux; i++);
     return(i<dimprod && prod[i].sku == aux)?i:-1;
@@ -93,18 +97,18 @@ ostream& operator <<(ostream& os, const Product& a) {
 void Cliente (Repa rep[], int dimrep, Product prod []){ 
     string clave;
     cout << "Ingresar el nombre del Cliente: ";
-    cin >> clave;
+    std::getline(cin >> ws, clave);
     if(clave == FIN)
         return;
 
     int iclien = buscar_linea_ord (clave, rep, dimrep);
-    if (iclien==-1){
+    if (iclien==-1) {
         cout<<"Cliente no encontrado"<<endl;
         return Cliente (rep, dimrep, prod);;
     } //ejercicio 5
     
     float CostoFijo =0, CostoDirecto=0, Presupuesto=0; 
-    while(rep[iclien].cliente==clave){ 
+    while(rep[iclien].cliente==clave) { 
         //Ejercicio 3
         cout<<rep[iclien];
         string aux= rep[iclien].sku;
@@ -119,32 +123,33 @@ void Cliente (Repa rep[], int dimrep, Product prod []){
         iclien++;
     }
     cout<<"La ganancia total de una reparación es de "<<Presupuesto - CostoFijo + CostoDirecto <<"$"<<endl;
-     return Cliente (rep, dimrep, prod);}
+    return Cliente (rep, dimrep, prod);
+}
 
 
-int main(){
- int dimrep=16;
- Product prod [dimprod];
- Repa rep [dimrep];
+int main() {
+    int dimrep=16;
+    Product prod [dimprod];
+    Repa rep [dimrep];
 
 
- //Ejercicio 2
- ifstream archiprod; 
- archiprod.open("productos.bin", ios::binary);   
-     for (int i = 0; i < dimprod; i++) {
+    //Ejercicio 2
+    ifstream archiprod; 
+    archiprod.open("productos.bin", ios::binary);   
+        for (int i = 0; i < dimprod; i++) {
         archiprod >> prod [i];   
     }
- archiprod.close();
+    archiprod.close();
 
- ifstream archirep; 
- archirep.open("reparaciones.bin", ios::binary);
+    ifstream archirep; 
+    archirep.open("reparaciones.bin", ios::binary);
     for (int i = 0; i < dimrep; i++) {
         archirep >> rep [i];
     }
- archirep.close();
+    archirep.close();
 
- ordenar(rep, dimrep,*criterio);
-Cliente (rep, dimrep, prod);
+    ordenar(rep, dimrep,*criterio);
+    Cliente (rep, dimrep, prod);
 
- return 0;
+    return 0;
 }
