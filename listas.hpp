@@ -6,16 +6,14 @@ template <typename T> struct Nodo {
 	Nodo<T>* sig; // puntero al siguiente nodo
 };
 
-template <typename T> void push(Nodo<T>* &pila, T valor)
-{
+template <typename T> void push(Nodo<T>* &pila, T valor) {
 	Nodo<T>* nuevo = new Nodo<T>;
 	nuevo->dato = valor;
 	nuevo->sig = pila;
 	pila = nuevo;
 }
 
-template <typename T> T pop(Nodo<T>* &pila)
-{
+template <typename T> T pop(Nodo<T>* &pila) {
 	if (pila == nullptr) {
 		std::cout << "Error: pop en pila vacia" << std::endl;
 		exit(EXIT_FAILURE);
@@ -28,8 +26,7 @@ template <typename T> T pop(Nodo<T>* &pila)
 	return valor;
 }
 
-template <typename T> void agregar(Nodo<T>*& cola, T valor)
-{
+template <typename T> void agregar(Nodo<T>*& cola, T valor) {
 	Nodo<T>* nuevo = new Nodo<T>;
 	nuevo->dato = valor;
 	nuevo->sig = nullptr;
